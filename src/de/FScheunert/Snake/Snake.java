@@ -4,6 +4,7 @@ import de.FScheunert.Snake.Entitys.Apple;
 import de.FScheunert.Snake.Entitys.Head;
 import de.FScheunert.Snake.Mechanics.EntityHandler;
 import de.FScheunert.Snake.Mechanics.KeyboardListener;
+import de.FScheunert.Snake.Utilities.GameState;
 import de.FScheunert.Snake.Utilities.Heartbeat;
 import de.FScheunert.Snake.Utilities.JFrameBuilder;
 
@@ -81,21 +82,70 @@ public class Snake extends Canvas {
         getEntityHandler().render(g);
 
         g.setColor(Color.BLACK);
+        setTransparency(g, 0.2F);
         for(int x = 1; x < SQUARE_INDEX_WIDTH+1; x++) {
             g.drawRect(WIDTH_FACTOR*x, 0, 0, getFrameBuilder().getHeight());
             if(x < SQUARE_INDEX_HEIGHT)
                 g.drawRect(0, HEIGHT_FACTOR*x, getFrameBuilder().getWidth(), 0);
         }
+        setTransparency(g, 1);
+
+        if(!BORDER_OVERPASS) {
+            g.setColor(Color.RED);
+            g.fillRect(0, 0, getFrameBuilder().getWidth(), 4);
+            g.fillRect(0, 0, 4, getFrameBuilder().getHeight());
+            g.fillRect(getFrameBuilder().getWidth()-4, 0, 4, getFrameBuilder().getHeight());
+            g.fillRect(0, getFrameBuilder().getHeight()-4, getFrameBuilder().getWidth(), 4);
+        }
+
+        switch(GameState.getGameState()) {
+            case PAUSE -> renderPause(g);
+            case MENU -> renderMenu(g);
+            case END -> renderEnd(g);
+        }
 
         g.dispose();
         bs.show();
 
-        System.out.println("Delay: " + (System.currentTimeMillis()-lastExecution));
+        //System.out.println("Delay: " + (System.currentTimeMillis()-lastExecution));
         lastExecution = System.currentTimeMillis();
     }
 
+    private void renderPause(Graphics g) {
+        renderBaseOverlay(g, Color.LIGHT_GRAY);
+    }
+
+    private void renderEnd(Graphics g) {
+        renderBaseOverlay(g, Color.RED);
+    }
+
+    private void renderMenu(Graphics g) {
+        renderBaseOverlay(g, Color.CYAN);
+    }
+
+    private void renderBaseOverlay(Graphics g, Color background) {
+        setTransparency(g, 0.5F);
+        g.setColor(background);
+        g.fillRect(0, 0, getFrameBuilder().getWidth(), getFrameBuilder().getHeight());
+        setTransparency(g, 1);
+
+        g.setColor(Color.WHITE);
+        int menuWidth = (int) (getFrameBuilder().getWidth()*0.3);
+        int menuHeight = (int) (getFrameBuilder().getHeight()*0.75);
+        g.fillRect(getFrameBuilder().getWidth()/2 - menuWidth/2, getFrameBuilder().getHeight()/2 - menuHeight/2,
+                menuWidth, menuHeight);
+        g.setColor(Color.BLACK);
+        g.drawRect(getFrameBuilder().getWidth()/2 - menuWidth/2, getFrameBuilder().getHeight()/2 - menuHeight/2,
+                menuWidth, menuHeight);
+    }
+
+    private void setTransparency(Graphics g, float value) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, value));
+    }
+
     public synchronized  void tickLogic() {
-        getEntityHandler().tick();
+        if(GameState.INGAME.isActive()) getEntityHandler().tick();
     }
 
     public JFrameBuilder getFrameBuilder() {

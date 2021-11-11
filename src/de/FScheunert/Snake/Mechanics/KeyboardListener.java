@@ -1,6 +1,7 @@
 package de.FScheunert.Snake.Mechanics;
 
 import de.FScheunert.Snake.Snake;
+import de.FScheunert.Snake.Utilities.GameState;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -20,10 +21,16 @@ public class KeyboardListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case 37,65 -> this.snake.getSnakeHead().setDirection(0);
-            case 38,87 -> this.snake.getSnakeHead().setDirection(1);
-            case 39,68 -> this.snake.getSnakeHead().setDirection(2);
-            case 40,83 -> this.snake.getSnakeHead().setDirection(3);
+            case 37,65 -> {if(GameState.INGAME.isActive()) this.snake.getSnakeHead().setDirection(0);}
+            case 38,87 -> {if(GameState.INGAME.isActive()) this.snake.getSnakeHead().setDirection(1);}
+            case 39,68 -> {if(GameState.INGAME.isActive()) this.snake.getSnakeHead().setDirection(2);}
+            case 40,83 -> {if(GameState.INGAME.isActive()) this.snake.getSnakeHead().setDirection(3);}
+
+            case 27,80 -> {
+                if(GameState.MENU.isActive() || GameState.END.isActive()) return;
+                GameState.setGameState(GameState.INGAME.isActive() ? GameState.PAUSE : GameState.INGAME);
+            }
+            case 82 -> {/**reset**/}
         }
     }
 

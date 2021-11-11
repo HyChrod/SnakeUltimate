@@ -2,6 +2,7 @@ package de.FScheunert.Snake.Entitys;
 
 import de.FScheunert.Snake.Mechanics.Entity;
 import de.FScheunert.Snake.Snake;
+import de.FScheunert.Snake.Utilities.GameState;
 import de.FScheunert.Snake.Utilities.Heartbeat;
 
 import java.awt.*;
@@ -34,18 +35,13 @@ public class Head extends Entity {
         for(Entity en : getSnake().getEntityHandler().getLivingEntitys()) {
             if(en.getUniqueId().equals(this.getUniqueId())
                     || en.getUniqueId().equals(getSnake().getApple().getUniqueId())) continue;
-            if(en.getPosY() == getPosY() && en.getPosX() == getPosX()) {
-                try {
-                    Heartbeat.getByMethod("renderGraphics").suspend().getThread().join();
-                    Heartbeat.getByMethod("tickLogic").suspend().getThread().join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            if(en.getPosY() == getPosY() && en.getPosX() == getPosX()) GameState.END.setActive();
         }
     }
 
     public void setDirection(int direction) {
+        if(this.direction == 0 && direction == 2 || this.direction == 2 && direction == 0
+        || this.direction == 1 && direction == 3 || this.direction == 3 && direction == 1) return;
         this.direction = direction;
     }
 
