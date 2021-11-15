@@ -1,5 +1,6 @@
 package de.FScheunert.Snake.Mechanics;
 
+import de.FScheunert.Snake.Entitys.Tail;
 import de.FScheunert.Snake.Snake;
 
 import java.awt.*;
@@ -57,6 +58,12 @@ public class EntityHandler {
 
     public LinkedList<Entity> getLivingEntitys() {
         return this.livingEntitys;
+    }
+
+    public void reset() {
+        for(Entity en : getLivingEntitys().stream().filter(e -> e instanceof Tail).toList())
+            livingEntitys.remove(en);
+        setOverflow(3);
     }
 
 }

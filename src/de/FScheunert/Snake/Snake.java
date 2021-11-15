@@ -2,16 +2,15 @@ package de.FScheunert.Snake;
 
 import de.FScheunert.Snake.Entitys.Apple;
 import de.FScheunert.Snake.Entitys.Head;
-import de.FScheunert.Snake.Mechanics.EntityHandler;
-import de.FScheunert.Snake.Mechanics.KeyboardListener;
+import de.FScheunert.Snake.Mechanics.*;
 import de.FScheunert.Snake.Utilities.GameState;
 import de.FScheunert.Snake.Utilities.Heartbeat;
 import de.FScheunert.Snake.Utilities.JFrameBuilder;
 
-import javax.tools.Tool;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.security.Key;
+import java.io.IOException;
 
 public class Snake extends Canvas {
 
@@ -19,19 +18,24 @@ public class Snake extends Canvas {
         new Snake();
     }
 
-    private final double SCREEN_SIZE_RATIO = 0.75;
+    // Configuration values
+    public final double SCREEN_SIZE_RATIO = 0.55;
     public final int SQUARE_INDEX_WIDTH = 15;
+    public final boolean BORDER_OVERPASS = true;
+
+    // Do not change - will be calculated depending on the configuration values
     public final int SQUARE_INDEX_HEIGHT;
     private final double SCREEN_FACTOR;
     public final int WIDTH_FACTOR;
     public final int HEIGHT_FACTOR;
     public final int ENTITY_MAX_X;
     public final int ENTITY_MAX_Y;
-    public final boolean BORDER_OVERPASS = true;
 
     private JFrameBuilder frameBuilder;
 
     private EntityHandler entityHandler;
+
+    private DynamicHandler dynamicHandler;
 
     private Head snakeHead;
     private Apple apple;
@@ -57,13 +61,54 @@ public class Snake extends Canvas {
                 .build();
         this.addKeyListener(new KeyboardListener(this));
 
+        MouseListeners mouseListeners = new MouseListeners(this);
+        this.addMouseMotionListener(mouseListeners);
+        this.addMouseListener(mouseListeners);
+
         new Heartbeat(this, "renderGraphics", 20L);
         new Heartbeat(this, "tickLogic", 200L);
 
         this.entityHandler = new EntityHandler(this,3);
+        this.dynamicHandler = new DynamicHandler(this);
 
-        this.snakeHead = new Head(5*WIDTH_FACTOR, 3*HEIGHT_FACTOR, Color.GREEN,this);
+        this.snakeHead = new Head(WIDTH_FACTOR, 3*HEIGHT_FACTOR, Color.GREEN,this);
         this.apple = new Apple(7*WIDTH_FACTOR, 3*HEIGHT_FACTOR, Color.RED, this);
+
+        //Buttons and DynamicElements
+        new DynamicButton(0.5, 0.35, 0.2, 0.1, Color.CYAN, "Resume", GameState.PAUSE, this)
+                .setAction(GameState.INGAME::setActive);
+        new DynamicButton(0.5, 0.5, 0.2, 0.1, Color.CYAN, "New Game", GameState.PAUSE, this)
+                .setAction(this::resetGame);
+        new DynamicButton(0.5, 0.65, 0.2, 0.1, Color.CYAN, "Exit", GameState.PAUSE, this)
+                .setAction(() -> {
+                    resetGame();
+                    GameState.MENU.setActive();
+                });
+
+        new DynamicButton(0.5, 0.4, 0.2, 0.1, Color.CYAN, "New Game", GameState.END, this)
+                .setAction(this::resetGame);
+        new DynamicButton(0.5, 0.55, 0.2, 0.1, Color.CYAN, "Exit", GameState.END, this)
+                .setAction(() -> {
+                    resetGame();
+                    GameState.MENU.setActive();
+                });
+
+        new DynamicButton(0.5, 0.35, 0.2, 0.1, Color.CYAN, "New Game", GameState.MENU, this)
+                .setAction(this::resetGame);
+        new DynamicButton(0.5, 0.5, 0.2, 0.1, Color.CYAN, "Settings", GameState.MENU, this);
+        new DynamicButton(0.5, 0.65, 0.2, 0.1, Color.CYAN, "Exit", GameState.MENU, this)
+                .setAction(() -> {System.exit(0);});
+    }
+
+    private void resetGame() {
+        getSnakeHead().setPosX(WIDTH_FACTOR);
+        getSnakeHead().setPosY(3*HEIGHT_FACTOR);
+        getSnakeHead().setDirection(2, true);
+        getApple().setPosX(7*WIDTH_FACTOR);
+        getApple().setPosY(3*HEIGHT_FACTOR);
+
+        getEntityHandler().reset();
+        GameState.INGAME.setActive();
     }
 
     long lastExecution = System.currentTimeMillis();
@@ -78,6 +123,9 @@ public class Snake extends Canvas {
 
         g.setColor(Color.WHITE);
         g.fillRect(0,0, getFrameBuilder().getWidth(), getFrameBuilder().getHeight());
+
+        Font f = new Font(Font.SANS_SERIF, Font.BOLD, (int) (25 * SCREEN_SIZE_RATIO));
+        g.setFont(f);
 
         getEntityHandler().render(g);
 
@@ -103,6 +151,7 @@ public class Snake extends Canvas {
             case MENU -> renderMenu(g);
             case END -> renderEnd(g);
         }
+        if(!GameState.INGAME.isActive()) getDynamicHandler().render(g);
 
         g.dispose();
         bs.show();
@@ -146,6 +195,7 @@ public class Snake extends Canvas {
 
     public synchronized  void tickLogic() {
         if(GameState.INGAME.isActive()) getEntityHandler().tick();
+        else getDynamicHandler().tick();
     }
 
     public JFrameBuilder getFrameBuilder() {
@@ -154,6 +204,10 @@ public class Snake extends Canvas {
 
     public EntityHandler getEntityHandler() {
         return entityHandler;
+    }
+
+    public DynamicHandler getDynamicHandler() {
+        return dynamicHandler;
     }
 
     public Head getSnakeHead() {

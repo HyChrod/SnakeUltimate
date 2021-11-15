@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class Head extends Entity {
 
-    private int direction = 0;
+    private int direction = 2;
 
     public Head(int posX, int posY, Color color, Snake snake) {
         super(posX, posY, color, snake);
@@ -39,9 +39,9 @@ public class Head extends Entity {
         }
     }
 
-    public void setDirection(int direction) {
-        if(this.direction == 0 && direction == 2 || this.direction == 2 && direction == 0
-        || this.direction == 1 && direction == 3 || this.direction == 3 && direction == 1) return;
+    public void setDirection(int direction, boolean force) {
+        if(!force && (this.direction == 0 && direction == 2 || this.direction == 2 && direction == 0
+                || this.direction == 1 && direction == 3 || this.direction == 3 && direction == 1)) return;
         this.direction = direction;
     }
 

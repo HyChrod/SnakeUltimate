@@ -1,8 +1,10 @@
 package de.FScheunert.Snake.Utilities;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.io.File;
 
 public class JFrameBuilder {
 
@@ -55,6 +57,15 @@ public class JFrameBuilder {
 
     public JFrameBuilder addKeyListener(KeyListener listener) {
         this.frame.addKeyListener(listener);
+        return this;
+    }
+
+    public JFrameBuilder setIcon(String path) {
+        try {
+            this.frame.setIconImage(ImageIO.read(new File("de/FScheunert/Snake/icon.png")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
