@@ -10,7 +10,7 @@ public class JFrameBuilder {
 
     private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 
-    private JFrame frame = null;
+    private final JFrame frame;
 
     private int width = 0, height = 0;
     private ScreenPosition position = ScreenPosition.CENTER;

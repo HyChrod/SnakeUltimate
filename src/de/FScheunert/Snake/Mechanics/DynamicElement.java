@@ -7,18 +7,15 @@ import java.awt.*;
 
 public abstract class DynamicElement {
 
-    private int posX, posY;
-    private double relX, relY;
-    private double relWidth, relHeight;
-    private int width, height;
-    private GameState state;
-    private Snake snake;
+    private final int posX, posY;
+    private final double relX, relY;
+    private final int width, height;
+    private final GameState state;
+    private final Snake snake;
 
     public DynamicElement(double relX, double relY, double relWidth, double relHeight, Snake snake, GameState state) {
         this.relX = relX;
         this.relY = relY;
-        this.relWidth = relWidth;
-        this.relHeight = relHeight;
         this.state = state;
         this.snake = snake;
 
@@ -64,14 +61,6 @@ public abstract class DynamicElement {
 
     public double getRelY() {
         return relY;
-    }
-
-    public double getRelWidth() {
-        return relWidth;
-    }
-
-    public double getRelHeight() {
-        return relHeight;
     }
 
     public GameState getState() {

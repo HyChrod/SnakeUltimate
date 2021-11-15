@@ -7,14 +7,14 @@ import java.util.UUID;
 
 public abstract class Entity {
 
-    private UUID uniqueId = UUID.randomUUID();
+    private final UUID uniqueId = UUID.randomUUID();
 
     private int posX;
     private int posY;
 
-    private Color color;
+    private final Color color;
 
-    private Snake snake;
+    private final Snake snake;
 
     public Entity(int posX, int posY, Color color, Snake snake) {
         this.posX = posX;

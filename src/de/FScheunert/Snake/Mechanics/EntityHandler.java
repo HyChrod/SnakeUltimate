@@ -9,9 +9,9 @@ import java.util.Random;
 
 public class EntityHandler {
 
-    private Snake snake;
+    private final Snake snake;
 
-    private LinkedList<Entity> livingEntitys = new LinkedList<>();
+    private final LinkedList<Entity> livingEntitys = new LinkedList<>();
 
     private int overflow;
 
@@ -20,13 +20,10 @@ public class EntityHandler {
         this.snake = snake;
     }
 
-    public int addEntity(Entity entity) {
+    public void addEntity(Entity entity) {
         livingEntitys.add(entity);
-        if (livingEntitys.size() > overflow) {
+        if (livingEntitys.size() > overflow)
             livingEntitys.remove(2);
-            return 1;
-        }
-        return 0;
     }
 
     public void render(Graphics g) {

@@ -5,7 +5,6 @@ public enum GameState {
     MENU(),
     INGAME(),
     PAUSE(),
-    SETTINGS(),
     END();
 
     private static GameState gameState = MENU;

@@ -1,21 +1,16 @@
 package de.FScheunert.Snake.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
-import java.security.spec.ECField;
 import java.util.HashMap;
 
 public class Heartbeat implements Runnable {
 
-    private static HashMap<String, Heartbeat> threadMap = new HashMap<>();
+    private static final HashMap<String, Heartbeat> threadMap = new HashMap<>();
 
-    public static Heartbeat getByMethod(String method) {
-        return threadMap.getOrDefault(method.toUpperCase(), null);
-    }
-
-    private Object instance;
-    private String method;
-    private long delay;
-    private Thread thread;
+    private final Object instance;
+    private final String method;
+    private final long delay;
+    private final Thread thread;
 
     private boolean suspended = false;
 

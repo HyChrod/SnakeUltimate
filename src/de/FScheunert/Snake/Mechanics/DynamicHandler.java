@@ -7,9 +7,9 @@ import java.util.LinkedList;
 
 public class DynamicHandler {
 
-    private Snake snake;
+    private final Snake snake;
 
-    private LinkedList<DynamicElement> elementsRendered = new LinkedList<>();
+    private final LinkedList<DynamicElement> elementsRendered = new LinkedList<>();
 
     public DynamicHandler(Snake snake) {
         this.snake = snake;

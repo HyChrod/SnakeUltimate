@@ -3,7 +3,6 @@ package de.FScheunert.Snake.Entitys;
 import de.FScheunert.Snake.Mechanics.Entity;
 import de.FScheunert.Snake.Snake;
 import de.FScheunert.Snake.Utilities.GameState;
-import de.FScheunert.Snake.Utilities.Heartbeat;
 
 import java.awt.*;
 
@@ -43,10 +42,6 @@ public class Head extends Entity {
         if(!force && (this.direction == 0 && direction == 2 || this.direction == 2 && direction == 0
                 || this.direction == 1 && direction == 3 || this.direction == 3 && direction == 1)) return;
         this.direction = direction;
-    }
-
-    public int getDirection() {
-        return this.direction;
     }
 
 }

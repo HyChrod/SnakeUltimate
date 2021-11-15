@@ -6,13 +6,11 @@ import de.FScheunert.Snake.Utilities.GameState;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.util.function.Function;
-import java.util.function.IntConsumer;
 
 public class DynamicButton extends DynamicElement {
 
-    private String text;
-    private Color color;
+    private final String text;
+    private final Color color;
 
     private DynAction action = null;
 

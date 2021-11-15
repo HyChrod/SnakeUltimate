@@ -7,10 +7,8 @@ import de.FScheunert.Snake.Utilities.GameState;
 import de.FScheunert.Snake.Utilities.Heartbeat;
 import de.FScheunert.Snake.Utilities.JFrameBuilder;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.IOException;
 
 public class Snake extends Canvas {
 
@@ -25,7 +23,6 @@ public class Snake extends Canvas {
 
     // Do not change - will be calculated depending on the configuration values
     public final int SQUARE_INDEX_HEIGHT;
-    private final double SCREEN_FACTOR;
     public final int WIDTH_FACTOR;
     public final int HEIGHT_FACTOR;
     public final int ENTITY_MAX_X;
@@ -43,7 +40,7 @@ public class Snake extends Canvas {
     public Snake() {
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         WIDTH_FACTOR = (int) (screenDimension.getWidth()*SCREEN_SIZE_RATIO / SQUARE_INDEX_WIDTH);
-        SCREEN_FACTOR = (screenDimension.getHeight()*SCREEN_SIZE_RATIO)/(screenDimension.getWidth()*SCREEN_SIZE_RATIO);
+        double SCREEN_FACTOR = (screenDimension.getHeight() * SCREEN_SIZE_RATIO) / (screenDimension.getWidth() * SCREEN_SIZE_RATIO);
         SQUARE_INDEX_HEIGHT = (int) (SQUARE_INDEX_WIDTH * SCREEN_FACTOR);
         HEIGHT_FACTOR = (int) (screenDimension.getHeight()*SCREEN_SIZE_RATIO / SQUARE_INDEX_HEIGHT);
         ENTITY_MAX_X = WIDTH_FACTOR*(SQUARE_INDEX_WIDTH-1);
@@ -97,7 +94,7 @@ public class Snake extends Canvas {
                 .setAction(this::resetGame);
         new DynamicButton(0.5, 0.5, 0.2, 0.1, Color.CYAN, "Settings", GameState.MENU, this);
         new DynamicButton(0.5, 0.65, 0.2, 0.1, Color.CYAN, "Exit", GameState.MENU, this)
-                .setAction(() -> {System.exit(0);});
+                .setAction(() -> System.exit(0));
     }
 
     private void resetGame() {
