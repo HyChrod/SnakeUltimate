@@ -2,6 +2,7 @@ package de.FScheunert.Snake.Mechanics;
 
 import de.FScheunert.Snake.Snake;
 import de.FScheunert.Snake.Utilities.GameState;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -20,7 +21,7 @@ public record MouseListeners(Snake snake) implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(@NotNull MouseEvent e) {
         int x = e.getX(), y = e.getY();
         if (GameState.INGAME.isActive()) return;
 

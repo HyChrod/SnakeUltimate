@@ -1,5 +1,7 @@
 package de.FScheunert.Snake.Utilities;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
@@ -14,7 +16,7 @@ public class Heartbeat implements Runnable {
 
     private boolean suspended = false;
 
-    public Heartbeat(Object instance, String method, long delay) {
+    public Heartbeat(Object instance, @NotNull String method, long delay) {
         this.instance = instance;
         this.method = method;
         this.delay = delay;

@@ -2,6 +2,7 @@ package de.FScheunert.Snake.Mechanics;
 
 import de.FScheunert.Snake.Snake;
 import de.FScheunert.Snake.Utilities.GameState;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,7 +13,7 @@ public record KeyboardListener(Snake snake) implements KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(@NotNull KeyEvent e) {
         switch (e.getKeyCode()) {
             case 37, 65 -> {
                 if (GameState.INGAME.isActive()) this.snake.getSnakeHead().setDirection(0, false);

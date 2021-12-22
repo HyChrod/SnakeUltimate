@@ -3,6 +3,7 @@ package de.FScheunert.Snake.Mechanics;
 import de.FScheunert.Snake.Snake;
 import de.FScheunert.Snake.Utilities.DynAction;
 import de.FScheunert.Snake.Utilities.GameState;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -24,7 +25,7 @@ public class DynamicButton extends DynamicElement {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(@NotNull Graphics g) {
         g.setColor(getColor());
         g.fillRect((int) (getPosX() - (isHovered() ? (20*getSnake().SCREEN_SIZE_RATIO) : 0)),
                 (int) (getPosY() - (isHovered() ? (10*getSnake().SCREEN_SIZE_RATIO) : 0)),

@@ -1,6 +1,7 @@
 package de.FScheunert.Snake.Mechanics;
 
 import de.FScheunert.Snake.Snake;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.UUID;
@@ -16,7 +17,7 @@ public abstract class Entity {
 
     private final Snake snake;
 
-    public Entity(int posX, int posY, Color color, Snake snake) {
+    public Entity(int posX, int posY, Color color, @NotNull Snake snake) {
         this.posX = posX;
         this.posY = posY;
         this.color = color;
@@ -24,7 +25,7 @@ public abstract class Entity {
         snake.getEntityHandler().addEntity(this);
     }
 
-    protected void superRender(Graphics g) {
+    protected void superRender(@NotNull Graphics g) {
         g.setColor(getColor());
         render(g);
     }
