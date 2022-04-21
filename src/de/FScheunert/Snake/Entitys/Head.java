@@ -9,6 +9,7 @@ import java.awt.*;
 
 public class Head extends Entity {
 
+    private int beforeTick = 2;
     private int direction = 2;
 
     public Head(int posX, int posY, Color color, Snake snake) {
@@ -24,12 +25,13 @@ public class Head extends Entity {
     public void tick() {
         int oldX = getPosX();
         int oldY = getPosY();
-        switch(direction) {
+        switch(this.direction) {
             case 0 -> setPosX(getPosX()-getSnake().WIDTH_FACTOR);
             case 1 -> setPosY(getPosY()-getSnake().HEIGHT_FACTOR);
             case 2 -> setPosX(getPosX()+getSnake().WIDTH_FACTOR);
             case 3 -> setPosY(getPosY()+getSnake().HEIGHT_FACTOR);
         }
+        this.beforeTick = this.direction;
         new Tail(oldX, oldY, getSnake());
 
         for(Entity en : getSnake().getEntityHandler().getLivingEntitys()) {
@@ -42,6 +44,7 @@ public class Head extends Entity {
     public void setDirection(int direction, boolean force) {
         if(!force && (this.direction == 0 && direction == 2 || this.direction == 2 && direction == 0
                 || this.direction == 1 && direction == 3 || this.direction == 3 && direction == 1)) return;
+        if(this.direction != this.beforeTick) return;
         this.direction = direction;
     }
 

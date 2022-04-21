@@ -23,7 +23,7 @@ public record MouseListeners(Snake snake) implements MouseListener, MouseMotionL
     @Override
     public void mouseMoved(@NotNull MouseEvent e) {
         int x = e.getX(), y = e.getY();
-        if (GameState.INGAME.isActive()) return;
+        if (GameState.INGAME.isActive() || getSnake().getDynamicHandler() == null) return;
 
         for (DynamicElement element : getSnake().getDynamicHandler().getElementsRendered().stream()
                 .filter(i -> i instanceof DynamicButton).toList()) {
