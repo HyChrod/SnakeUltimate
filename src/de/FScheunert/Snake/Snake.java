@@ -12,13 +12,14 @@ import java.awt.image.BufferStrategy;
 
 public class Snake extends Canvas {
 
-    public static void main(String[] args) {
-        new Snake();
-    }
+    public static void main(String[] args) {}
+
+    private static final Snake INSTANCE = new Snake();
+    public static Snake getInstance() {return INSTANCE;}
 
     // Configuration values
-    public final double SCREEN_SIZE_RATIO = 0.55;
-    public final int SQUARE_INDEX_WIDTH = 15;
+    public final double SCREEN_SIZE_RATIO = 0.5;
+    public final int SQUARE_INDEX_WIDTH = 30;
     public final boolean BORDER_OVERPASS = true;
 
     // Do not change - will be calculated depending on the configuration values
@@ -93,7 +94,7 @@ public class Snake extends Canvas {
         new DynamicButton(0.5, 0.35, 0.2, 0.1, Color.CYAN, "New Game", GameState.MENU, this)
                 .setAction(this::resetGame);
         new DynamicButton(0.5, 0.5, 0.2, 0.1, Color.CYAN, "Settings", GameState.MENU, this);
-        new DynamicButton(0.5, 0.65, 0.2, 0.1, Color.CYAN, "Exit", GameState.MENU, this)
+        new DynamicButton(0.5, 0.65, 0.2, 0.1, Color.CYAN, "Quit Game", GameState.MENU, this)
                 .setAction(() -> System.exit(0));
     }
 

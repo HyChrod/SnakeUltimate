@@ -27,15 +27,10 @@ public class DynamicButton extends DynamicElement {
     @Override
     public void render(@NotNull Graphics g) {
         g.setColor(getColor());
-        g.fillRect((int) (getPosX() - (isHovered() ? (20*getSnake().SCREEN_SIZE_RATIO) : 0)),
-                (int) (getPosY() - (isHovered() ? (10*getSnake().SCREEN_SIZE_RATIO) : 0)),
-                (int) (getWidth() + (isHovered() ? (40*getSnake().SCREEN_SIZE_RATIO) : 0)),
-                (int) (getHeight() + (isHovered() ? (20*getSnake().SCREEN_SIZE_RATIO) : 0)));
+        int[] dimensions = getDrawingDimensions();
+        g.fillRect(dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
         g.setColor(Color.BLACK);
-        g.drawRect((int) (getPosX() - (isHovered() ? (20*getSnake().SCREEN_SIZE_RATIO) : 0)),
-                (int) (getPosY() - (isHovered() ? (10*getSnake().SCREEN_SIZE_RATIO) : 0)),
-                (int) (getWidth() + (isHovered() ? (40*getSnake().SCREEN_SIZE_RATIO) : 0)),
-                (int) (getHeight() + (isHovered() ? (20*getSnake().SCREEN_SIZE_RATIO) : 0)));
+        g.drawRect(dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
 
         Rectangle2D textMessurements = g.getFontMetrics().getStringBounds(getText(), g);
         g.drawString(getText(), (int) (getSnake().getFrameBuilder().getWidth()*getRelX() - textMessurements.getWidth()/2),
@@ -72,6 +67,19 @@ public class DynamicButton extends DynamicElement {
     public void interact() {
         if(getAction() != null) getAction().interact();
         setHovered(false);
+    }
+
+    private int[] getDrawingDimensions() {
+        return new int[] {
+                calculateDimension(getPosX(), 20, false),
+                calculateDimension(getPosY(), 10, false),
+                calculateDimension(getWidth(), 40, true),
+                calculateDimension(getHeight(), 20, true)
+        };
+    }
+
+    private int calculateDimension(int pos, int multiplier, boolean addition) {
+        return (int) (pos + ((isHovered() ? (multiplier*getSnake().SCREEN_SIZE_RATIO) : 0) * (addition ? 1 : -1)));
     }
 
 }

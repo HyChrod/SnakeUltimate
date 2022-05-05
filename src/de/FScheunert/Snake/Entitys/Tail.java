@@ -18,8 +18,6 @@ public class Tail extends Entity {
     }
 
     @Override
-    public void tick() {
-
-    }
+    public void tick() {}
 
 }
